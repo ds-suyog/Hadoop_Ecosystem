@@ -1,0 +1,30 @@
+
+pig -x local
+
+records	= LOAD '/home/suyog/data/sample.txt' AS (year:chararray, temperature:int, quality:int);
+DUMP records;
+
+filtered_records = FILTER records BY temperature != 9999 AND quality IN	(0, 1, 4, 5, 9);
+DUMP filtered_records;
+
+grouped_records	= GROUP	filtered_records BY year;
+DUMP grouped_records;
+
+max_temp = FOREACH grouped_records GENERATE group, MAX(filtered_records.temperature);
+DUMP max_temp;
+
+
+# IMPORT A TABLE
+sqoop import --connect "jdbc:mysql://localhost/FOR_SQOOP" --username root --password cloudera --table TAB1 --target-dir /user/cloudera/TAB1 -m 1
+
+# CODEGEN
+sqoop codegen --connect "jdbc:mysql://localhost/FOR_SQOOP" --table TAB1 --class-name TABLE1
+
+# IMPORT ALL TABLE
+sqoop import-all-tables --connect "jdbc:mysql://localhost/FOR_SQOOP" --username root --password cloudera -m 1
+
+# IMPORT WITH WHERE CLAUSE
+sqoop import --connect "jdbc:mysql://localhost/FOR_SQOOP" --username root --password cloudera --target-dir /user/cloudera/TAB2 -m 1 --query "select * from TAB1 where id=1 AND \$CONDITIONS"
+
+# EXPORT DATA TO RDBMS
+sqoop export --connect "jdbc:mysql://localhost/FOR_SQOOP" -m 1 --username root --password cloudera --table TAB2 --export-dir /user/cloudera/TAB2

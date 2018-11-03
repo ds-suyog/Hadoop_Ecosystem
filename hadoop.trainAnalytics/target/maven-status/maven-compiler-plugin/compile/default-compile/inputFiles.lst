@@ -1,0 +1,4 @@
+/home/suyog/eclipse-workspace/hadoop.trainAnalytics/src/main/java/org/daa/examples/hadoop/wordcount/LengthCountMapOnlyJob.java
+/home/suyog/eclipse-workspace/hadoop.trainAnalytics/src/main/java/org/daa/examples/hadoop/wordcount/WordCountReducer.java
+/home/suyog/eclipse-workspace/hadoop.trainAnalytics/src/main/java/org/daa/examples/hadoop/wordcount/WordCountMapper.java
+/home/suyog/eclipse-workspace/hadoop.trainAnalytics/src/main/java/org/daa/examples/hadoop/wordcount/WordCount.java

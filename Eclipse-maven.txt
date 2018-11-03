@@ -1,0 +1,73 @@
+
+--------------- Adding maven dependency in java project of eclipse: hadoop.ch03hdfs
+
+#Short-cut:
+copy-pasted hadoop.filesystem -> hadoop.filesystem2 -> refactored -> hadoop.ch03_hdfs -> dependencies are already set
+
+
+#From scratch-A:
+Made java project -> right click project -> configure -> convert to maven project
+Adding maven dependency
+mvn repository -> searched org.apache.hadoop.conf.Configuration -> downloaded jar
+project -> rclick -> configure build path  -> add external jar -> hadoop-common-2.6.0.jar
+add in pom: 
+<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+<dependencies>
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-common</artifactId>
+    <version>2.6.0</version>
+    <scope>provided</scope>
+</dependency>
+</dependencies>
+
+this didn't worked properly for me!! But why download jars individually, better to add dependency in pom.xml and let it download jars. See next method
+
+
+
+#From scratch-B:
+create maven project -> group id = org.daa.examples -> artifact id = projectName = hadoop.ch03hdfs ---
+--> it created same structure as in sir's file (except extra maven dependencies). So sir followed same procedure, it seems
+
+created maven project -> ch03hdfs
+
+adding dependencies in pom.xml:
+
+<dependencies>
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-common</artifactId>
+    <version>2.6.0</version>
+    <scope>provided</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-hdfs -->
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-hdfs</artifactId>
+    <version>2.6.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-core -->
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-mapreduce-client-core</artifactId>
+    <version>2.6.0</version>
+</dependency>
+</dependencies>
+
+maven build -> goal- clean install (at least this worked for me), clean verify/, clean package 
+project -> rclick -> run as -> maven clean
+run as -> maven-install
+
+snapshot.jar is ready for use! 
+
+
+
+-------------------------
+
+http://maven.apache.org/guides/getting-started/index.html
+
+http://www.vogella.com/tutorials/EclipseMaven/article.html 
+
+
+

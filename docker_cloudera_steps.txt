@@ -1,0 +1,16 @@
+
+to install docker -> sudo yum install docker
+
+#Create a group with docker 
+sudo groupadd docker
+usermod -aG docker dbda
+
+# Logout and login again
+
+sudo service docker start
+
+docker import - cloudera/quickstart:latest < ./cloudera-quickstart-vm-5.12.0-0-beta-docker.tar
+
+docker run --hostname=quickstart.cloudera --privileged=true -t -i cloudera/quickstart:latest /usr/bin/docker-quickstart
+
+

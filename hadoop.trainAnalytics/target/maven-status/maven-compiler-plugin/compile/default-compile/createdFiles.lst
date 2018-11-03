@@ -1,0 +1,4 @@
+org/daa/examples/hadoop/wordcount/WordCountMapper.class
+org/daa/examples/hadoop/wordcount/WordCountReducer.class
+org/daa/examples/hadoop/wordcount/WordCount.class
+org/daa/examples/hadoop/wordcount/LengthCountMapOnlyJob.class

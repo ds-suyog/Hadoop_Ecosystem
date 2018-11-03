@@ -1,0 +1,452 @@
+
+
+
+*****************************************
+*					*
+*	Various Installtion		*
+*		+			*
+*	Handy Links			*
+*****************************************
+
+https://www.thegeekstuff.com/2012/02/hadoop-pseudo-distributed-installation/
+
+https://www.dezyre.com/hadoop-tutorial/install-hive
+
+Namenode information 	http://localhost:50070/
+All Applications  	http://localhost:8088/
+Directory: 		/logs/userlogs/
+
+h-base webgui- http://localhost:60010/
+
+
+
+
+*****************************************
+*					*
+*	handy commands			*
+*					*
+*****************************************
+
+start-dfs.sh
+yarn-dfs.sh
+start-yarn.sh
+alternative- start-all.sh
+
+hdfs fsck /
+hdfs file check:
+hdfs dfsadmin fsck
+hdfs dfs -ls /
+
+
+pig -x (default)
+pig -x local (local mode)
+
+
+zkServer.sh start
+zkServer.sh status
+
+start-hbase.sh
+hbase shell
+status
+Start phoenix client:$ bin/sqlline.py <your_zookeeper_host>
+
+
+stop-dfs.sh
+stop-yarn.sh
+Alternative to both- stop-all.sh
+
+
+
+
+
+
+
+
+
+
+*****************************************
+*					*
+*	Vanilla Hadoop Installtion	*
+*					*
+*****************************************
+
+[dbda@localhost ~]$ which java
+/usr/bin/java
+[dbda@localhost ~]$ ls -ltr /usr/bin/java
+lrwxrwxrwx. 1 root root 22 Dec  7 13:33 /usr/bin/java -> /etc/alternatives/java
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ ls -ltr /etc/alternatives/java
+lrwxrwxrwx 1 root root 46 Aug 18 16:46 /etc/alternatives/java -> /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+Most of these directories are symlinks to each other. You, probably, have two JDK/JRE installed: Open JDK and Oracle JDK. java1.8.0_91 is probably JRE, not JDK.
+
+suyog@sks-Inspiron-15-3567:~/hadooop$~/.bashrc
+#added by me
+export HADOOP_HOME=/home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export JAVA_HOME="/usr"
+export PATH=$JAVA_HOME/bin:$PATH
+
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+export PIG_HOME=/home/suyog/hadooop/pig-0.17.0
+export PATH=$PATH:$PIG_HOME/bin
+export SQOOP_HOME=/home/suyog/hadooop/sqoop-1.4.6-cdh5.13.0
+export PATH=$PATH:$SQOOP_HOME/bin
+export HIVE_HOME=/home/suyog/hadooop/hive-1.1.0-cdh5.13.0
+export PATH=$PATH:$HIVE_HOME/bin
+export SPARK_HOME=/home/suyog/hadooop/spark-2.2.0-bin-hadoop2.6
+export PATH=$PATH:$SPARK_HOME/bin
+
+export ZOOKEEPER_HOME=/home/suyog/hadooop/zookeeper-3.4.6
+export PATH=$PATH:$ZOOKEEPER_HOME/bin
+export HBASE_HOME=/home/suyog/hadooop/hbase-1.2.6
+export PATH=$PATH:$HBASE_HOME/bin
+export PHOENIX_HOME=/home/suyog/Desktop/hadooop/apache-phoenix-4.13.1-HBase-1.2-bin
+export PATH=$PATH:$PHOENIX_HOME/bin
+
+suyog@sks-Inspiron-15-3567:~/hadooop$ source ~/.bashrc
+suyog@sks-Inspiron-15-3567:~/hadooop$ hadoop version 
+
+Error resolution:
+https://stackoverflow.com/questions/17335728/connect-to-host-localhost-port-22-connection-refused
+
+
+$hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0-cdh5.13.0.jar
+suyog@sks-Inspiron-15-3567:~/hadooop$ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0-cdh5.13.0.jar wordcount input output
+local host connection refused error
+
+------------
+
+had to give pass multiple times.  Use login passwordless ssh 
+https://askubuntu.com/questions/46930/how-can-i-set-up-password-less-ssh-login
+
+suyog@sks-Inspiron-15-3567:~/hadooop$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/suyog/.ssh/id_rsa): 
+Created directory '/home/suyog/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/suyog/.ssh/id_rsa.
+Your public key has been saved in /home/suyog/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:o+IiJbnNK6cQwtLT3YOyewPbLk6XiOk9oVuSdBKajmc suyog@sks-Inspiron-15-3567
+The key's randomart image is:
+
+
+suyog@sks-Inspiron-15-3567:~/.ssh$ ssh-copy-id -i ~/.ssh/id_rsa.pub localhost
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/suyog/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+/usr/bin/ssh-copy-id: ERROR: ssh: connect to host localhost port 22: Connection refused
+
+
+
+Remove SSH. Command:
+sudo apt-get remove openssh-client openssh-server
+Add SSH again. Command:
+sudo apt-get install openssh-client openssh-server
+
+
+suyog@sks-Inspiron-15-3567:~/.ssh$ ssh-copy-id -i ~/.ssh/id_rsa.pub localhost
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/suyog/.ssh/id_rsa.pub"
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:q/VzdJ5Ru1Vlm5nVHcAFFYlfbzTy7I6IaZAZqo1qSKg.
+Are you sure you want to continue connecting (yes/no)? Y
+Please type 'yes' or 'no': yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+suyog@localhost's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'localhost'"
+and check to make sure that only the key(s) you wanted were added.
+
+
+
+suyog@sks-Inspiron-15-3567:~/.ssh$ which ssh
+/usr/bin/ssh
+suyog@sks-Inspiron-15-3567:~/.ssh$ which sshd
+/usr/sbin/sshd
+
+suyog@sks-Inspiron-15-3567:~$ ssh-add
+Could not open a connection to your authentication agent.
+suyog@sks-Inspiron-15-3567:~$ chmod 700 ~/.ssh
+chmod 700 ~/.ssh
+
+https://unix.stackexchange.com/questions/48863/ssh-add-complains-could-not-open-a-connection-to-your-authentication-agent/48868#48868
+
+suyog@sks-Inspiron-15-3567:~$ eval "$(ssh-agent)"
+Agent pid 13315
+suyog@sks-Inspiron-15-3567:~$ sudo ssh-add
+Could not open a connection to your authentication agent.
+suyog@sks-Inspiron-15-3567:~$ ssh-add
+Identity added: /home/suyog/.ssh/id_rsa (/home/suyog/.ssh/id_rsa)
+suyog@sks-Inspiron-15-3567:~$ ^C
+
+suyog@sks-Inspiron-15-3567:~$ ssh localhost
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-98-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+96 packages can be updated.
+53 updates are security updates.
+
+Last login: Sat Dec  9 01:00:08 2017 from 127.0.0.1
+
+suyog@sks-Inspiron-15-3567:~$ ssh-copy-id -i ~/.ssh/id_rsa.pub localhost
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/suyog/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+/usr/bin/ssh-copy-id: WARNING: All keys were skipped because they already exist on the remote system.
+		(if you think this is a mistake, you may want to use -f option)
+
+
+---------------
+
+
+
+vim home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/etc/hadoop/hadoop-env.sh
+export JAVA_HOME=${JAVA_HOME} changed to
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+sourcing
+source $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+start-dfs.sh is in sbin
+enter sbin
+./start-dfs.sh
+start-dfs.sh (will work once path is set in vim ~/.bashrc)
+
+export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"/etc/hadoop"}   changed to
+export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"/home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/etc/hadoop"}
+
+start-all.sh
+	start-dfs.sh
+stop-all.sh
+	stop-dfs.sh
+
+
+hdfs namenode -format
+
+hdfs dfs -ls /
+
+
+Java.net connection refused error, checked system. jdk was not installed
+
+sudo apt-get install openjdk-8-jdk-headless
+suyog@sks-Inspiron-15-3567:~$ javac -version
+javac 1.8.0_151
+
+
+---
+
+
+datanode not starting
+/home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/logs -> hadoop-suyog-datanode-sks-Inspiron-15-3567.log
+namenode data had different cluster IDs: either manually assign same ids or delete files from hadoop dir and format namenode again
+
+vi logs/hadoop-suyog-
+
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ vi logs/
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ vi logs/hadoop-suyog-datanode-sks-Inspiron-15-3567.
+hadoop-suyog-datanode-sks-Inspiron-15-3567.log    hadoop-suyog-datanode-sks-Inspiron-15-3567.out.3
+hadoop-suyog-datanode-sks-Inspiron-15-3567.out    hadoop-suyog-datanode-sks-Inspiron-15-3567.out.4
+hadoop-suyog-datanode-sks-Inspiron-15-3567.out.1  hadoop-suyog-datanode-sks-Inspiron-15-3567.out.5
+
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ rm -rf /home/suyog/hadooop/datanodeDir/datanode/* 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ rm -rf /home/suyog/hadooop/namenodeDir/namenode/* 
+
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ rm -rf /home/suyog/hadooop/namenodeDir/namenode/* 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ ls 
+bin  bin-mapreduce1  cloudera  etc  examples  examples-mapreduce1  include  lib  libexec  LICENSE.txt  logs  NOTICE.txt  README.txt  sbin  share  src
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ vi etc/hadoop
+hadoop/                   hadoop-mapreduce1/        hadoop-mapreduce1-pseudo/ hadoop-mapreduce1-secure/ 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ vi etc/hadoop/hdfs-site.xml 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ hdfs namenode -format
+Formatting using clusterid: CID-c442e5be-d8b1-440b-8fb8-d449360826aa
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ ./sbin/start-dfs.sh 
+
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ jps 
+17840 Jps
+15410 ResourceManager
+17396 NameNode
+17722 SecondaryNameNode
+15533 NodeManager
+
+have to stop first, then do same steps
+
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ ./sbin/stop-dfs.sh 
+Stopping namenodes on [localhost]
+localhost: stopping namenode
+localhost: no datanode to stop
+Stopping secondary namenodes [0.0.0.0]
+0.0.0.0: stopping secondarynamenode
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ rm -rf /home/suyog/hadooop/namenodeDir/namenode/* 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ rm -rf /home/suyog/hadooop/datanodeDir/datanode/* 
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ hdfs namenode -format
+Formatting using clusterid: CID-4b9ddfd6-0c47-40f9-91c6-41bbbbe977fa
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ ./sbin/start-dfs.sh 
+Starting namenodes on [localhost]
+localhost: starting namenode, logging to /home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/logs/hadoop-suyog-namenode-sks-Inspiron-15-3567.out
+localhost: starting datanode, logging to /home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/logs/hadoop-suyog-datanode-sks-Inspiron-15-3567.out
+Starting secondary namenodes [0.0.0.0]
+0.0.0.0: starting secondarynamenode, logging to /home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0/logs/hadoop-suyog-secondarynamenode-sks-Inspiron-15-3567.out
+suyog@sks-Inspiron-15-3567:~/hadooop/hadoop-2.6.0-cdh5.13.0$ jps 
+18546 DataNode
+15410 ResourceManager
+18850 Jps
+18732 SecondaryNameNode
+15533 NodeManager
+18399 NameNode
+
+
+
+
+
+
+
+*****************************************
+*					*
+*	PIG Installtion			*
+*					*
+*****************************************
+
+grunt> fs -ls 
+grunt> customers = LOAD 'customers.txt' USING PigStorage(',');
+
+
+
+*****************************************
+*					*
+*	HIVE Installtion		*
+*					*
+*****************************************
+
+
+
+*****************************************
+*					*
+*	SQOOP Installtion		*
+*					*
+*****************************************
+
+suyog@sks-Inspiron-15-3567:~/hadooop/mysql-connector-java-5.1.45$ sudo cp mysql-connector-java-5.1.45-bin.jar $SQOOP_HOME/lib
+
+
+
+
+
+*****************************************
+*					*
+*	SPARK Installtion		*
+*					*
+*****************************************
+
+https://spark.apache.org/docs/latest/spark-standalone.html
+
+suyog@sks-Inspiron-15-3567:~/hadooop/spark-2.2.0-bin-hadoop2.6$ sbin/start-master.sh
+starting org.apache.spark.deploy.master.Master, logging to /home/suyog/hadooop/spark-2.2.0-bin-hadoop2.6/logs/spark-suyog-org.apache.spark.deploy.master.Master-1-sks-Inspiron-15-3567.out
+
+suyog@sks-Inspiron-15-3567:~/hadooop/spark-2.2.0-bin-hadoop2.6$ sbin/start-slave.sh spark://sks-Inspiron-15-3567:7077
+
+Once you have started a worker, look at the master’s web UI (http://localhost:8080 by default). You should see the new node listed there, along with its number of CPUs and memory (minus one gigabyte left for the OS).
+
+
+
+
+
+*****************************************
+*					*
+*	HBASE Installtion		*
+*					*
+*****************************************
+
+
+hbase 1.2.6:
+hbase error:
+2017-12-12 10:21:48,157 ERROR [main] client.ConnectionManager$HConnectionImplementation: The node /hbase is not in ZooKeeper. It should have been written by the master. Check the value configured in 'zookeeper.znode.parent'. There could be a mismatch th the one configured in the master.
+
+solution: remove property region.server in hbase-site.xml (as first mentioned in file given by sir)		
+
+then restart hbase
+
+
+
+*****************************************
+*					*
+*	PHOENIX Installtion		*
+*					*
+*****************************************
+
+
+phoeix make 1 col family only and put all together. So we do loose tuning.
+
+hbase 1.2.. so phoneix jar 1.2
+testing hbase:
+create table dbda (name VARCHAR(20), prn INTEGER)
+
+!list
+
+installing phoenix:
+http://www-eu.apache.org/dist/phoenix/apache-phoenix-4.13.1-HBase-1.2/bin/
+http://www-eu.apache.org/dist/phoenix/apache-phoenix-4.13.1-HBase-1.2/bin/apache-phoenix-4.13.1-HBase-1.2-bin.tar.gz 
+
+cp phoenix-4.13.1-HBase-1.2-server.jar phoenix-4.13.1-HBase-1.2-queryserver.jar /home/suyog/Desktop/hadooop/hbase-1.2.6/lib/.
+
+*phoenix might need this(which i deleted in hbase):3rd property - codec something.. 
+
+*(sir)- if mavendepen issue then copy it in lib -> m2.zip 
+
+
+
+
+
+*****************************************
+*					*
+*	added in vim ~/.bashrc		*
+*					*
+*****************************************
+
+#Mine
+export HADOOP_HOME=/home/suyog/hadooop/hadoop-2.6.0-cdh5.13.0
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export JAVA_HOME="/usr"
+export PATH=$JAVA_HOME/bin:$PATH
+
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+
+export PIG_HOME=/home/suyog/hadooop/pig-0.17.0
+export PATH=$PATH:$PIG_HOME/bin
+export SQOOP_HOME=/home/suyog/hadooop/sqoop-1.4.6-cdh5.13.0
+export PATH=$PATH:$SQOOP_HOME/bin
+export HIVE_HOME=/home/suyog/hadooop/hive-1.1.0-cdh5.13.0
+export PATH=$PATH:$HIVE_HOME/bin
+export SPARK_HOME=/home/suyog/hadooop/spark-2.2.0-bin-hadoop2.6
+export PATH=$PATH:$SPARK_HOME/bin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
